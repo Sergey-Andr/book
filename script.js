@@ -1,7 +1,8 @@
 function manageScrollAndPageNotifier() {
     const SCROLL_KEY = "lastScrollHeight";
     const PAGE_KEY = "lastPage";
-    const PAGE_HEIGHT = 932; // Высота страницы в пикселях
+    let PAGE_WIDTH = window.screen.availWidth;
+    let PAGE_HEIGHT = window.screen.availHeight; // Высота страницы в пикселях
     let currentPage = 0; // Текущая страница
     let totalPages = Math.floor(document.body.scrollHeight / PAGE_HEIGHT);
 
@@ -79,12 +80,23 @@ function manageScrollAndPageNotifier() {
         alert("Сохранённые данные очищены!");
     });
 
-    window.addEventListener("resize", () => {
-        const updatedScrollPosition = window.scrollY;
-        totalPages = Math.floor(window.innerHeight / PAGE_HEIGHT)
-        const updatedPage = Math.floor(updatedScrollPosition / PAGE_HEIGHT) + 1;
+    window.addEventListener("resize", (e) => {
+        // Определяем высоту страницы в зависимости от ориентации
+        const isVertical = window.matchMedia("(orientation: portrait)").matches;
+        const pageDimension = isVertical ? PAGE_HEIGHT : PAGE_WIDTH;
+        const scrollDimension = isVertical ? window.scrollY : window.scrollX
 
-        // Обновить локальное хранилище
+        // document.body.style.maxWidth = `${isVertical ? (PAGE_WIDTH - 16) : (PAGE_HEIGHT - 32)}px`;
+        // console.log(`${isVertical ? (PAGE_WIDTH - 16) : (PAGE_HEIGHT - 32)}px`)
+
+        // Пересчитываем общее количество страниц
+        totalPages = Math.floor(document.body.scrollHeight / pageDimension);
+
+        // Пересчитываем текущую страницу
+        const updatedScrollPosition = scrollDimension;
+        const updatedPage = Math.floor(updatedScrollPosition / pageDimension) + 1;
+
+        // Обновляем локальное хранилище
         localStorage.setItem(SCROLL_KEY, updatedScrollPosition);
         localStorage.setItem(PAGE_KEY, updatedPage);
 
@@ -96,14 +108,8 @@ function manageScrollAndPageNotifier() {
 // Инициализация функции
 manageScrollAndPageNotifier();
 
-// Получаем ширину экрана пользователя
-const screenWidth = window.innerWidth;
-
-// Устанавливаем ширину на body
-document.body.style.maxWidth = `${screenWidth - 16}px`;
-
-// Обновляем ширину при изменении размера окна (например, при смене ориентации)
-window.addEventListener('resize', () => {
-    const updatedWidth = window.innerWidth;
-    document.body.style.maxWidth = `${updatedWidth}px`;
-});
+// // Получаем ширину экрана пользователя
+// const screenWidth = window.innerWidth;
+//
+// // Устанавливаем ширину на body
+// document.body.style.maxWidth = `${screenWidth - 16}px`;
