@@ -107,9 +107,4 @@ function manageScrollAndPageNotifier() {
 
 // Инициализация функции
 manageScrollAndPageNotifier();
-
-// // Получаем ширину экрана пользователя
-// const screenWidth = window.innerWidth;
-//
-// // Устанавливаем ширину на body
-// document.body.style.maxWidth = `${screenWidth - 16}px`;
+document.documentElement.webkitRequestFullscreen()
