@@ -3,6 +3,7 @@ function manageScrollAndPageNotifier() {
     const PAGE_KEY = "lastPage";
     const PAGE_HEIGHT = 932; // Высота страницы в пикселях
     let currentPage = 0; // Текущая страница
+    let totalPages = Math.floor(document.body.scrollHeight / PAGE_HEIGHT);
 
     const btn = document.getElementById("set-height")
     btn.textContent = `Установить страницу ${localStorage.getItem(PAGE_KEY) ?? 1}`
@@ -10,7 +11,7 @@ function manageScrollAndPageNotifier() {
     // Функция для отображения уведомления
     function showNotification(pageNumber) {
         const notification = document.createElement("div");
-        notification.textContent = `Страница ${pageNumber}`;
+        notification.textContent = `Страница ${pageNumber} / ${totalPages}`;
         notification.style.position = "fixed";
         notification.style.width = "fit-content";
         notification.style.top = "20px";
@@ -80,6 +81,7 @@ function manageScrollAndPageNotifier() {
 
     window.addEventListener("resize", () => {
         const updatedScrollPosition = window.scrollY;
+        totalPages = Math.floor(window.innerHeight / PAGE_HEIGHT)
         const updatedPage = Math.floor(updatedScrollPosition / PAGE_HEIGHT) + 1;
 
         // Обновить локальное хранилище
