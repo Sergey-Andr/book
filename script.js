@@ -77,7 +77,31 @@ function manageScrollAndPageNotifier() {
         localStorage.removeItem(PAGE_KEY);
         alert("Сохранённые данные очищены!");
     });
+
+    window.addEventListener("resize", () => {
+        const updatedScrollPosition = window.scrollY;
+        const updatedPage = Math.floor(updatedScrollPosition / PAGE_HEIGHT) + 1;
+
+        // Обновить локальное хранилище
+        localStorage.setItem(SCROLL_KEY, updatedScrollPosition);
+        localStorage.setItem(PAGE_KEY, updatedPage);
+
+        // Обновить текущую страницу
+        currentPage = updatedPage;
+    });
 }
 
 // Инициализация функции
 manageScrollAndPageNotifier();
+
+// Получаем ширину экрана пользователя
+const screenWidth = window.innerWidth;
+
+// Устанавливаем ширину на body
+document.body.style.maxWidth = `${screenWidth - 16}px`;
+
+// Обновляем ширину при изменении размера окна (например, при смене ориентации)
+window.addEventListener('resize', () => {
+    const updatedWidth = window.innerWidth;
+    document.body.style.maxWidth = `${updatedWidth}px`;
+});
