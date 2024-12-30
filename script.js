@@ -12,6 +12,7 @@ function manageScrollAndPageNotifier() {
         const notification = document.createElement("div");
         notification.textContent = `Страница ${pageNumber}`;
         notification.style.position = "fixed";
+        notification.style.width = "fit-content";
         notification.style.top = "20px";
         notification.style.left = "50%";
         notification.style.transform = "translateX(-50%)";
@@ -31,7 +32,7 @@ function manageScrollAndPageNotifier() {
             notification.style.opacity = "1";
         }, 0);
 
-        // Скрыть и удалить уведомление через 2 секунды
+        //Скрыть и удалить уведомление через 2 секунды
         setTimeout(() => {
             notification.style.opacity = "0";
             setTimeout(() => notification.remove(), 300);
